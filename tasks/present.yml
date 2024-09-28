@@ -1,11 +1,32 @@
 ---
 
-# tasks to install ansible-role-template
-# INFO larger roles should only use **include_tasks** here
+# tasks to install ansible-nautilus
 
 
-# INFO This task may be osbolete for your use-case
 - name: Gather package facts
   ansible.builtin.package_facts:
+
+- name: Include dependencies
+  ansible.builtin.include_tasks:
+    file: dependencies.yml
+
+- name: Install nautilus
+  become: true
+  when: nautilus_package[ansible_os_family] not in ansible_facts.packages
+  ansible.builtin.package:
+    name: "{{ nautilus_package[ansible_os_family] }}"
+    state: present
+
+- name: Get Gnome version
+  ansible.builtin.shell:
+    cmd: "gnome-shell --version | awk '{print $3}' | cut -d'.' -f1"
+  register: gnome_major_version
+  changed_when: false
+
+- name: Configure nautilus settings
+  loop: "{{ nautilus_settings[gnome_major_version.stdout] | dict2items }}"
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value | string }}"
 
 ...

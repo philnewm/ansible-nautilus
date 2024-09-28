@@ -1,22 +1,16 @@
-## Role Name
+# Ansible Nautilus Role
 
-[![ci-testing](https://github.com/philnewm/ansible-role-template/actions/workflows/molecule-ci.yml/badge.svg)](https://github.com/philnewm/ansible-role-template/actions/workflows/molecule-ci.yml)
+[![Alma9-CI](https://github.com/philnewm/ansible-nautilus/actions/workflows/alma9-ci.yml/badge.svg)](https://github.com/philnewm/ansible-nautilus/actions/workflows/alma9-ci.yml)  [![Debian12-CI](https://github.com/philnewm/ansible-nautilus/actions/workflows/debian12-ci.yml/badge.svg)](https://github.com/philnewm/ansible-nautilus/actions/workflows/debian12-ci.yml)
 
 Role description
 
-
-
 This role includes a full vagrant based molecule testing setup at `extensions/molecule/default`
 
-# Structure
+## Structure
 
-```
-📦 ansible-role-template
+```code
+📦 ansible-nautilus
  ┣ 📂 defaults
- ┃ ┗ 📜 main.yml
-  ┣ 📂 files
- ┃ ┗ 📜 file_placeholder.yml
- ┣ 📂 handlers
  ┃ ┗ 📜 main.yml
  ┣ 📂 meta
  ┃ ┗ 📜 main.yml
@@ -29,8 +23,6 @@ This role includes a full vagrant based molecule testing setup at `extensions/mo
  ┃ ┣ 📜 dependencies.yml
  ┃ ┣ 📜 absent.yml
  ┃ ┗ 📜 init.yml
- ┣ 📂 templates
- ┃ ┗ ⛩️ template.j2
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
@@ -38,43 +30,41 @@ This role includes a full vagrant based molecule testing setup at `extensions/mo
 
 ```
 
-Describe and explain role structure. 
+Describe and explain role structure.
 
 ## Requirements
 
-Ellaborate external dependencies and how to use them.
+THis role needs an instaleld gnome desktop environemnt to be functional.
 
 ## Role Variables
 
 * defaults/main.yml
-  * first_var
-  * sec_var
-  * third_var
+  * nautilus_package - name of the nautilus package per linux os family
+  * nautilus_settings - dconf releated nautilus configuration
 * vars/main.yml
-  * first_var
-  * sec_var
-  * third_var
-
+  * dependencies - to enable all features of this role
 
 ## Dependencies
 
-List role ansible-galaxy dependencies - if any.
+This role doesn't depend on any additional ansible-galaxy roles
 
 ## Example Playbook
 
 Add an example playbook
+
 ```yaml
 ---
 
 tasks:
-  - name: Include ansible-role-template present
+  - name: Include ansible-nautilus present
     ansible.builtin.include_role:
-      name: ansible-role-template
+      name: ansible-nautilus
     vars:
-      ansible_role_template_state: present
+      nautilus_state: present
 
 ...
 ```
+
 ## License
 
 Add license - if any.

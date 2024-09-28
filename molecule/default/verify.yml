@@ -4,12 +4,45 @@
   hosts: client
 
   tasks:
+    - name: Get Gnome version
+      ansible.builtin.shell:
+        cmd: "gnome-shell --version | awk '{print $3}' | cut -d'.' -f1"
+      register: gnome_major_version
+      changed_when: false
+
     - name: Initialize role library
       ansible.builtin.include_role:
-        name: ansible-role-template
+        name: ansible-nautilus
         tasks_from: init
 
     - name: Gather package facts
       ansible.builtin.package_facts:
+
+    - name: Test installed package
+      ansible.builtin.assert:
+        that:
+          - nautilus_package[ansible_os_family] in ansible_facts.packages
+        fail_msg: "Package '{{ nautilus_package[ansible_os_family] }}' is not installed"
+        quiet: true
+
+    - name: Get nautilus settings
+      loop: "{{ nautilus_settings[gnome_major_version.stdout] | dict2items }}"
+      community.general.dconf:
+        key: "{{ item.key }}"
+        state: read
+      register: dconf_list
+
+    - name: Test gnome settings
+      loop: "{{ dconf_list.results }}"
+      loop_control:
+        loop_var: entry
+        label: "{{ entry.item.key }}"
+      ansible.builtin.assert:
+        that:
+          - entry.value == nautilus_settings[gnome_major_version.stdout][entry.item.key]
+        fail_msg: |
+          "Expected value '{{ nautilus_settings[gnome_major_version.stdout][entry.item.key] }}'
+          but got '{{ entry.value }}' instead for key '{{ entry.item.key }}'."
+        quiet: true
 
 ...

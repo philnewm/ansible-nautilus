@@ -1,14 +1,14 @@
 ---
 
-- name: Create and configure ansible-role-template
+- name: Create and configure ansible-nautilus
   hosts: client
 
   # TODO local testing only
   # debugger: on_failed
 
   roles:
-    - role: ansible-role-template
+    - role: ansible-nautilus
       tasks_from: main
-      ansible_role_template_state: present
+      nautilus_state: present
 
 ...

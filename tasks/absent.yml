@@ -1,7 +1,13 @@
 ---
 
-# Tasks to remove ansible-role-template
+# Tasks to remove ansible-nautilus
 
+- name: Remove nautilus
+  become: true
+  when: nautilus_package[ansible_os_family] in ansible_facts.packages
+  ansible.builtin.package:
+    name: "{{ nautilus_package[ansible_os_family] }}"
+    state: absent
 
 - name: Remove unused dependencies
   become: true
