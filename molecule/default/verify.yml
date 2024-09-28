@@ -45,4 +45,12 @@
           but got '{{ entry.value }}' instead for key '{{ entry.item.key }}'."
         quiet: true
 
+    - name: Test installed plugins
+      loop: "{{ nautilus_plugins[ansible_os_family] }}"
+      ansible.builtin.assert:
+        that:
+          - item in ansible_facts.packages
+        fail_msg: "Package '{{ item }}' is not installed"
+        quiet: true
+
 ...

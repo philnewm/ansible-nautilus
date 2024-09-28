@@ -29,4 +29,12 @@
     key: "{{ item.key }}"
     value: "{{ item.value | string }}"
 
+- name: Install plugins
+  when: enable_plugins and item not in ansible_facts.packages
+  become: true
+  loop: "{{ nautilus_plugins[ansible_os_family] }}"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+
 ...

@@ -10,5 +10,6 @@
     - role: ansible-nautilus
       tasks_from: main
       nautilus_state: present
+      enable_plugins: true
 
 ...
