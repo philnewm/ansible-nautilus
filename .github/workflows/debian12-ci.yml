@@ -38,7 +38,9 @@ jobs:
 
     - name: Update system
       run: |
-        sudo apt-get update -y
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa -y
+        sudo apt update
+        sudo apt install g++-12 gcc-12 
 
     - name: Install dependencies
       run: |
