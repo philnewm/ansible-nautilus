@@ -19,7 +19,10 @@
 
 - name: Get Gnome version
   ansible.builtin.shell:
-    cmd: "gnome-shell --version | awk '{print $3}' | cut -d'.' -f1"
+    cmd: |
+      set -o pipefail
+      gnome-shell --version | awk '{print $3}' | cut -d'.' -f1
+    executable: /bin/bash
   register: gnome_major_version
   changed_when: false
 

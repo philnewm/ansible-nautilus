@@ -4,9 +4,15 @@
   hosts: client
 
   tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
     - name: Get Gnome version
       ansible.builtin.shell:
-        cmd: "gnome-shell --version | awk '{print $3}' | cut -d'.' -f1"
+        cmd: |
+          set -o pipefail
+          gnome-shell --version | awk '{print $3}' | cut -d'.' -f1
+        executable: /bin/bash
       register: gnome_major_version
       changed_when: false
 
@@ -14,9 +20,6 @@
       ansible.builtin.include_role:
         name: ansible-nautilus
         tasks_from: init
-
-    - name: Gather package facts
-      ansible.builtin.package_facts:
 
     - name: Test installed package
       ansible.builtin.assert:
@@ -26,9 +29,9 @@
         quiet: true
 
     - name: Get nautilus settings
-      loop: "{{ nautilus_settings[gnome_major_version.stdout] | dict2items }}"
+      loop: "{{ nautilus_settings[gnome_major_version.stdout].keys() }}"
       community.general.dconf:
-        key: "{{ item.key }}"
+        key: "{{ item }}"
         state: read
       register: dconf_list
 
@@ -36,13 +39,13 @@
       loop: "{{ dconf_list.results }}"
       loop_control:
         loop_var: entry
-        label: "{{ entry.item.key }}"
+        label: "{{ entry.item }}"
       ansible.builtin.assert:
         that:
-          - entry.value == nautilus_settings[gnome_major_version.stdout][entry.item.key]
+          - entry.value == nautilus_settings[gnome_major_version.stdout][entry.item]
         fail_msg: |
-          "Expected value '{{ nautilus_settings[gnome_major_version.stdout][entry.item.key] }}'
-          but got '{{ entry.value }}' instead for key '{{ entry.item.key }}'."
+          "Expected value '{{ nautilus_settings[gnome_major_version.stdout][entry.item] }}'
+          but got '{{ entry.value }}' instead for key '{{ entry.item }}'."
         quiet: true
 
     - name: Test installed plugins

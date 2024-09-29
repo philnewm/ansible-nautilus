@@ -2,9 +2,7 @@
 
 [![Alma9-CI](https://github.com/philnewm/ansible-nautilus/actions/workflows/alma9-ci.yml/badge.svg)](https://github.com/philnewm/ansible-nautilus/actions/workflows/alma9-ci.yml)  [![Debian12-CI](https://github.com/philnewm/ansible-nautilus/actions/workflows/debian12-ci.yml/badge.svg)](https://github.com/philnewm/ansible-nautilus/actions/workflows/debian12-ci.yml)
 
-Role description
-
-This role includes a full vagrant based molecule testing setup at `extensions/molecule/default`
+This role includes a full vagrant based molecule testing setup at `molecule/default`
 
 ## Structure
 
@@ -34,13 +32,15 @@ Describe and explain role structure.
 
 ## Requirements
 
-THis role needs an instaleld gnome desktop environemnt to be functional.
+This role needs an installed gnome desktop environment to be functional.
 
 ## Role Variables
 
 * defaults/main.yml
   * nautilus_package - name of the nautilus package per linux os family
-  * nautilus_settings - dconf releated nautilus configuration
+  * nautilus_settings - dconf related nautilus configuration
+  * enable_plugins - plugin switch
+  * nautilus_plugins - plugin list
 * vars/main.yml
   * dependencies - to enable all features of this role
 
@@ -68,7 +68,3 @@ tasks:
 ## License
 
 Add license - if any.
-
-## Changes to role template
-
-* Add github action that flags empty directories on release creation
