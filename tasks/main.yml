@@ -3,8 +3,8 @@
 # tasks file for ansible-nautilus
 
 
-- name: "Desired state is {{ nautilus_state }}"
+- name: "Desired state is {{ state }}"
   ansible.builtin.include_tasks:
-    file: "{{ nautilus_state }}.yml"
+    file: "{{ state }}.yml"
 
 ...

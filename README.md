@@ -60,7 +60,7 @@ tasks:
     ansible.builtin.include_role:
       name: ansible-nautilus
     vars:
-      nautilus_state: present
+      state: present
 
 ...
 ```
