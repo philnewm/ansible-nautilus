@@ -4,6 +4,10 @@
 
 This role includes a full vagrant based molecule testing setup at `molecule/default`
 
+## Deprecated
+
+This role only makes sense with a desktop environment and was tehrefore integrated into this [role](https://github.com/philnewm/ansible-gnome)
+
 ## Structure
 
 ```code
